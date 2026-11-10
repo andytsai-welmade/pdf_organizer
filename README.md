@@ -65,7 +65,7 @@ Use the first worksheet with **column A = Product Code** and **column B = Produc
 2. Load the Excel product database.
 3. Choose an output folder.
 4. For each page, search for products, enter quantities, set month/year, then select **Save & Continue**.
-5. The resulting filename looks like `1.11x1, 2.3x2, Oct 2026.pdf`.
+5. The resulting filename looks like `1.11x1, 2.3x2, Oct.26.pdf`.
 
 Existing output files are not silently overwritten. If you rename a previously exported page, the old export is retained and you are notified. The original scanned PDF is never modified.
 
@@ -75,3 +75,18 @@ Existing output files are not silently overwritten. If you rename a previously e
 - Product/date selection is manual.
 - No automatic session recovery after closing the app.
 - Same filename for different pages is rejected; choose distinct naming data.
+
+## Excel mapping (updated)
+
+Click **Configure product Excel** and choose an `.xlsx` workbook. In the configuration dialog:
+
+1. Select the worksheet from the dropdown.
+2. Enter ranges (e.g. `A7:A46` and `B7:B46`) **or** select contiguous vertical cells in the worksheet grid and click the corresponding **Use selected cells** button.
+3. Click **Validate ranges and preview mapping**. Check WBS codes and descriptions.
+4. Click **Use this mapping** to return to the PDF organizer.
+
+Ranges can start on different rows but must have the same number of cells; entries are paired by position. Blank WBS/description pairs are skipped. Missing descriptions and duplicate codes are rejected. The visual worksheet preview is limited to the first 250 rows and 24 columns for performance; you can type any valid range manually.
+
+**WBS codes:** Store them as text in Excel for maximum reliability. Numeric cells formatted `0.00` are interpreted using that formatting (e.g. `4.10`). If Excel already lost a trailing zero and no number format retains it, the original code cannot be recovered automatically.
+
+**Testing:** From the project folder, run `python -m unittest discover -s tests -v` (using your virtual environment's Python). The visual dialog must also be tested on Windows.

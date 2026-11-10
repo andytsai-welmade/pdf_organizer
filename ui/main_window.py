@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (
     QLineEdit, QListWidget, QMainWindow, QMessageBox, QPushButton,
     QScrollArea, QSpinBox, QSplitter, QVBoxLayout, QWidget,
 )
-from modules.excel_handler import read_products
+from ui.excel_config_dialog import ExcelConfigDialog
 from modules.filename_generator import MONTHS, make_filename
 from modules.page_state import PageState
 from modules.pdf_handler import open_document, render_page, export_page
@@ -35,7 +35,7 @@ class MainWindow(QMainWindow):
         toolbar = QHBoxLayout()
         self.pdf_button = QPushButton('1. Open scanned PDF')
         self.pdf_button.clicked.connect(self.open_pdf)
-        self.excel_button = QPushButton('2. Load product Excel')
+        self.excel_button = QPushButton('2. Configure product Excel')
         self.excel_button.clicked.connect(self.open_excel)
         self.folder_button = QPushButton('3. Choose output folder')
         self.folder_button.clicked.connect(self.choose_output)
@@ -150,12 +150,15 @@ class MainWindow(QMainWindow):
         if not path:
             return
         try:
-            self.products = read_products(path)
+            dialog = ExcelConfigDialog(path, self)
+            if dialog.exec() != dialog.DialogCode.Accepted:
+                return
+            self.products = dialog.products
+            self.search.clear()
+            self.filter_products()
+            self._refresh_items()
         except Exception as exc:
-            QMessageBox.critical(self, 'Cannot read Excel', str(exc))
-            return
-        self.filter_products()
-        self._update_controls()
+            QMessageBox.critical(self, 'Cannot configure Excel', str(exc))
 
     def choose_output(self):
         path = QFileDialog.getExistingDirectory(self, 'Choose output folder')
