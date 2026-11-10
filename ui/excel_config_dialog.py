@@ -13,7 +13,7 @@ class ExcelConfigDialog(QDialog):
         super().__init__(parent)
         self.path = path
         self.products = {}
-        self.setWindowTitle('Configure Excel WBS mapping')
+        self.setWindowTitle('Configure Excel item mapping')
         self.resize(1050, 760)
         root = QVBoxLayout(self)
         root.addWidget(QLabel('Choose worksheet, then type ranges or select cells in the grid below.'))
@@ -24,7 +24,7 @@ class ExcelConfigDialog(QDialog):
         form.addRow('Worksheet:', self.sheet)
         self.wbs = QLineEdit('A7:A46')
         self.desc = QLineEdit('B7:B46')
-        form.addRow('WBS item range:', self.wbs)
+        form.addRow('Item range:', self.wbs)
         form.addRow('Description range:', self.desc)
         root.addLayout(form)
         self.table = QTableWidget()
@@ -32,7 +32,7 @@ class ExcelConfigDialog(QDialog):
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectItems)
         root.addWidget(self.table, 3)
         selection = QHBoxLayout()
-        wbs_btn = QPushButton('Use selected cells as WBS range')
+        wbs_btn = QPushButton('Use selected cells as item range')
         desc_btn = QPushButton('Use selected cells as description range')
         wbs_btn.clicked.connect(lambda: self.set_from_selection(self.wbs))
         desc_btn.clicked.connect(lambda: self.set_from_selection(self.desc))
@@ -42,10 +42,10 @@ class ExcelConfigDialog(QDialog):
         self.note = QLabel('')
         self.note.setWordWrap(True)
         root.addWidget(self.note)
-        preview_group = QGroupBox('Mapped WBS item preview')
+        preview_group = QGroupBox('Mapped item preview')
         preview_layout = QVBoxLayout(preview_group)
         self.preview = QTableWidget(0, 2)
-        self.preview.setHorizontalHeaderLabels(['WBS item', 'Description'])
+        self.preview.setHorizontalHeaderLabels(['Item', 'Description'])
         self.preview.horizontalHeader().setStretchLastSection(True)
         self.preview.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         preview_layout.addWidget(self.preview)
@@ -103,7 +103,7 @@ class ExcelConfigDialog(QDialog):
         for i, (code, name) in enumerate(products.items()):
             self.preview.setItem(i, 0, QTableWidgetItem(code))
             self.preview.setItem(i, 1, QTableWidgetItem(name))
-        self.note.setText(f'Validated {len(products)} WBS items. Check the mapping before continuing.')
+        self.note.setText(f'Validated {len(products)} items. Check the mapping before continuing.')
         return True
 
     def accept_mapping(self):
