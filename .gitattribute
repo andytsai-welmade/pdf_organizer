@@ -1,0 +1,14 @@
+# Default text files
+* text=auto
+
+# Python files always use LF
+*.py text eol=lf
+
+# Project configuration
+*.toml text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Windows scripts
+*.bat text eol=crlf
+*.cmd text eol=crlf

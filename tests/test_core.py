@@ -8,7 +8,7 @@ from modules.excel_handler import read_products
 
 class TestCore(unittest.TestCase):
     def test_filename(self):
-        self.assertEqual(make_filename([('1.11', 1), ('2.3', 2)], 10, 2026), '1.11x1, 2.3x2, Oct.26.pdf')
+        self.assertEqual(make_filename([('1.11', 1), ('2.3', 2)], 10, 2026), '1.11x1, 2.3x2, Oct 2026.pdf')
 
     def test_duplicate_codes_rejected(self):
         with self.assertRaises(ValueError):

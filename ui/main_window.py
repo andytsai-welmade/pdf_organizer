@@ -50,7 +50,7 @@ class MainWindow(QMainWindow):
         root.addLayout(toolbar)
 
         # Show the status using label
-        self.status = QLabel('Open a PDF -> load Excel -> select an output folder to begin.')
+        self.status = QLabel('Steps to begin: Open a PDF -> Load Excel & configure the excel format -> Select an output folder')
         self.status.setWordWrap(True)
         root.addWidget(self.status)
 
