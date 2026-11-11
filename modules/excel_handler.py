@@ -1,4 +1,4 @@
-"""Project-specific Excel worksheet and WBS mapping."""
+"""Project-specific Excel worksheet and item mapping."""
 from __future__ import annotations
 import re
 from openpyxl import load_workbook
@@ -29,7 +29,7 @@ def _code_from_cell(cell) -> str:
     if value is None or str(value).strip() == '':
         return ''
     if isinstance(value, bool):
-        raise ValueError(f'Invalid boolean WBS code in {cell.coordinate}.')
+        raise ValueError(f'Invalid boolean item code in {cell.coordinate}.')
     if isinstance(value, (int, float)):
         fmt = cell.number_format or ''
         # Excel numeric display formats like 0.00 preserve trailing zeros.
@@ -43,12 +43,12 @@ def _code_from_cell(cell) -> str:
 
 
 def read_products(path: str, sheet_name: str | None = None,
-                  wbs_range: str = 'A2:A100',
+                  item_range: str = 'A2:A100',
                   description_range: str = 'B2:B100') -> dict[str, str]:
-    c1, r1, r2 = parse_single_column_range(wbs_range)
+    c1, r1, r2 = parse_single_column_range(item_range)
     c2, s1, s2 = parse_single_column_range(description_range)
     if r2 - r1 != s2 - s1:
-        raise ValueError('WBS and description ranges must contain the same number of rows.')
+        raise ValueError('Item and description ranges must contain the same number of rows.')
     wb = load_workbook(path, read_only=True, data_only=True)
     try:
         if sheet_name and sheet_name not in wb.sheetnames:
@@ -61,17 +61,17 @@ def read_products(path: str, sheet_name: str | None = None,
             description = ws.cell(row=s1 + offset, column=c2).value
             if not code:
                 if description is not None and str(description).strip():
-                    raise ValueError(f'Description has no WBS code at {code_cell.coordinate}.')
+                    raise ValueError(f'Description has no item code at {code_cell.coordinate}.')
                 continue
             if INVALID_FILENAME.search(code) or code.endswith(('.', ' ')):
-                raise ValueError(f'Invalid WBS code at {code_cell.coordinate}: {code!r}')
+                raise ValueError(f'Invalid item code at {code_cell.coordinate}: {code!r}')
             if code in products:
-                raise ValueError(f'Duplicate WBS code: {code} ({code_cell.coordinate})')
+                raise ValueError(f'Duplicate item code: {code} ({code_cell.coordinate})')
             if description is None or not str(description).strip():
                 raise ValueError(f'Missing description for {code} at {code_cell.coordinate}.')
             products[code] = str(description).strip()
         if not products:
-            raise ValueError('No WBS items found in the selected ranges.')
+            raise ValueError('No items found in the selected ranges.')
         return products
     finally:
         wb.close()

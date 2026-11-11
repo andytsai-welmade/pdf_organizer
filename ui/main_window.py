@@ -31,23 +31,36 @@ class MainWindow(QMainWindow):
     def _build_ui(self):
         central = QWidget()
         self.setCentralWidget(central)
-        root = QVBoxLayout(central)
-        toolbar = QHBoxLayout()
+        root = QVBoxLayout(central)     # -> the vertical layout for overall UI
+        toolbar = QHBoxLayout()         # -> the horizontal bar layout for buttons
+
+        # Create push buttons in the UI
         self.pdf_button = QPushButton('1. Open scanned PDF')
         self.pdf_button.clicked.connect(self.open_pdf)
+        
         self.excel_button = QPushButton('2. Configure product Excel')
         self.excel_button.clicked.connect(self.open_excel)
+
         self.folder_button = QPushButton('3. Choose output folder')
         self.folder_button.clicked.connect(self.choose_output)
+
+        # Arrange buttons layout on the top
         for b in (self.pdf_button, self.excel_button, self.folder_button):
             toolbar.addWidget(b)
         root.addLayout(toolbar)
-        self.status = QLabel('Open a PDF, load Excel, and select an output folder to begin.')
+
+        # Show the status using label
+        self.status = QLabel('Open a PDF -> load Excel -> select an output folder to begin.')
         self.status.setWordWrap(True)
         root.addWidget(self.status)
 
+        '''
+        Split the remaining layout for preview (left) and function page (right)
+        '''
         splitter = QSplitter(Qt.Orientation.Horizontal)
         root.addWidget(splitter, 1)
+
+        # Left preview layout
         left = QWidget()
         lv = QVBoxLayout(left)
         zoomrow = QHBoxLayout()
@@ -69,6 +82,7 @@ class MainWindow(QMainWindow):
         lv.addWidget(self.scroll, 1)
         splitter.addWidget(left)
 
+        # Right function layout
         right = QWidget()
         rv = QVBoxLayout(right)
         group = QGroupBox('Products on current page')
@@ -101,7 +115,7 @@ class MainWindow(QMainWindow):
         self.month = QComboBox()
         self.month.addItems(MONTHS)
         self.year = QSpinBox()
-        self.year.setRange(2000, 2099)
+        self.year.setRange(1900, 3000)
         self.month.currentIndexChanged.connect(self.date_changed)
         self.year.valueChanged.connect(self.date_changed)
         date_form.addRow('Month', self.month)
