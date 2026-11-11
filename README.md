@@ -6,17 +6,22 @@ One scanned PDF page becomes one output PDF, named from an Excel product databas
 
 ```text
 PDF_Organizer_V1_Modular/
-├── main.py                    # Application entry point only
+├── main.py                    # Application entry point
+│
 ├── modules/
 │   ├── excel_handler.py       # Read Excel product database
 │   ├── pdf_handler.py         # Open, preview, export PDF pages
 │   ├── filename_generator.py  # Filename rules and date formatting
 │   ├── validators.py          # Filename-safe product codes
 │   └── page_state.py          # Per-page selections and saved path
+│
 ├── ui/
 │   └── main_window.py         # PySide6 widgets and interactions
+│
 ├── tests/
-│   └── test_core.py           # Filename and Excel tests
+│   ├── test_core.py           # Filename tests
+│   └── test_excel_handler.py  # Excel handler tests
+│
 ├── data/                      # Put your Excel file here (optional)
 ├── output/                    # Optional export folder
 ├── requirements.txt
@@ -38,7 +43,7 @@ py main.py
 
 - Run from virtual env:
 ```powershell
-..\.venv\Scripts\python.exe .\main.py
+.venv\Scripts\python.exe .\main.py
 ```
 
 
@@ -53,7 +58,7 @@ py -m unittest discover -s tests -v
 ```powershell
 # __test_instance__ is the function to be test
 # either test_core.py or test_excel_handler.py
-..\.venv\Scripts\python.exe .\tests\__test_instance__.py
+.venv\Scripts\python.exe .\tests\__test_instance__.py
 
 ```
 
