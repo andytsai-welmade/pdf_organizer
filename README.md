@@ -37,8 +37,8 @@ PDF_Organizer_V1_Modular/
 
 - Run with Python:
 ```powershell
-py -m pip install -r requirements.txt
-py main.py
+python -m pip install -r requirements.txt
+python main.py
 ```
 
 - Run from virtual env:
@@ -51,17 +51,14 @@ py main.py
 - Run with python:
 
 ```powershell
-py -m unittest discover -s tests -v
+python -m unittest discover -s tests -v
 ```
 
-- Run from virtual env:
+### Export project to .exe file
 ```powershell
-# __test_instance__ is the function to be test
-# either test_core.py or test_excel_handler.py
-.venv\Scripts\python.exe .\tests\__test_instance__.py
-
+python -m PyInstaller --noconfirm --clean --onedir --windowed --name PDF_Organizer main.py
 ```
-
+The exported file can be find in `.\dist\PDF_Orginizer\PDF_Orginizer.exe`
 
 ## Excel format
 
@@ -105,8 +102,8 @@ Click **Configure product Excel** and choose an `.xlsx` workbook. In the configu
 3. Click **Validate ranges and preview mapping**. Check item codes and descriptions.
 4. Click **Use this mapping** to return to the PDF organizer.
 
-Ranges can start on different rows but must have the same number of cells; entries are paired by position. Blank WBS/description pairs are skipped. Missing descriptions and duplicate codes are rejected. The visual worksheet preview is limited to the first 250 rows and 24 columns for performance; you can type any valid range manually.
+<!-- Ranges can start on different rows but must have the same number of cells; entries are paired by position. Blank WBS/description pairs are skipped. Missing descriptions and duplicate codes are rejected. The visual worksheet preview is limited to the first 250 rows and 24 columns for performance; you can type any valid range manually.
 
 **Item codes:** Store them as text in Excel for maximum reliability. Numeric cells formatted `0.00` are interpreted using that formatting (e.g. `4.10`). If Excel already lost a trailing zero and no number format retains it, the original code cannot be recovered automatically.
 
-**Testing:** From the project folder, run `python -m unittest discover -s tests -v` (using your virtual environment's Python). The visual dialog must also be tested on Windows.
+**Testing:** From the project folder, run `python -m unittest discover -s tests -v` (using your virtual environment's Python). The visual dialog must also be tested on Windows. -->
