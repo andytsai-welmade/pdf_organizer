@@ -89,13 +89,13 @@ Existing output files are not silently overwritten. If you rename a previously e
 
 > TODO: Update when more functions needed.
 
-| Priority | Feature | Files to modify |
-|---|---|---|
-| 1 | Remember previous selected date | `page_state.py`, `main_window.py`|
-| 2 | Modify filename in UI |  |
-| 3 | Import expected item quantity | `excel_handler.py`, `excel_config_dialog.py` |
-| 4 | Show quatity warning to user | 	New `quantity_validator.py`, `main_window.py`, tests\ |
-| 5 | Delete wrong files (add review, modify filename mode) |  |
+| Priority | Feature | Files to modify | Status |
+|---|---|---|---|
+| 1 | Remember previous selected date | `main_window.py`: `save_and_continue()` | <b>Done</b> |
+| 2 | Modify filename in UI |  | <b>In progress</b> |
+| 3 | Import expected item quantity | `excel_handler.py`, `excel_config_dialog.py` | <b>Not started</b> |
+| 4 | Show quatity warning to user | 	New `quantity_validator.py`, `main_window.py`, tests\ | <b>Not started</b> |
+| 5 | Delete wrong files (add review mode, overwrite filenames saved) |  | <b>Not started</b> |
 
 
 ## Excel  comfiguration mapping

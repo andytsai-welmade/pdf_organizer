@@ -286,8 +286,11 @@ class MainWindow(QMainWindow):
             self._load_page()
 
     def save_and_continue(self):
+        # check document, output_dir, excel configured products availability
         if not (self.document and self.output_dir and self.products):
             return
+
+        # load states of each page
         state = self.states[self.index]
         try:
             for code, _ in state.items:
@@ -308,6 +311,8 @@ class MainWindow(QMainWindow):
             choice = QMessageBox.question(self, 'Replace your saved page?', f'Re-export page {self.index + 1} to:\n{target.name}?')
             if choice != QMessageBox.StandardButton.Yes:
                 return
+        
+        # Export the page to the target file
         try:
             export_page(self.document, self.index, target)
         except Exception as exc:
@@ -317,7 +322,17 @@ class MainWindow(QMainWindow):
         if old and old != target and old.exists():
             # Do not silently delete the old export after renaming; tell user instead.
             QMessageBox.information(self, 'New filename saved', f'New file saved. Previous export still exists:\n{old.name}\n\nDelete the old file manually if no longer needed.')
+
+        # Update the UI and move to the next page if not the last one
         if self.index < len(self.states) - 1:
+            # store current state's month and the next state's month
+            current_state = self.states[self.index]
+            next_state = self.states[self.index + 1]
+
+            # if the next page is untouched, then keep the current month to the next
+            if ((not next_state.items) and (next_state.saved_path is None)):
+                next_state.month = current_state.month
+                next_state.year = current_state.year
             self.index += 1
             self._load_page()
         else:
