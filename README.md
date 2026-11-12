@@ -1,5 +1,8 @@
 # PDF Organizer V1 — Modular Python Desktop Application
 
+[![PyPI Python Version](https://img.shields.io/pypi/pyversions/3.14.10)](https://www.python.org/downloads/)
+
+
 One scanned PDF page becomes one output PDF, named from an Excel product database.
 
 ## Project layout
