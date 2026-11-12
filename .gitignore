@@ -14,7 +14,7 @@ env/
 
 # Build outputs
 build/
-# dist/
+dist/
 *.spec
 
 # Generated PDF files
