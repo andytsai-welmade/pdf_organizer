@@ -4,6 +4,7 @@ from pathlib import Path
 from openpyxl import Workbook
 from modules.filename_generator import make_filename
 from modules.excel_handler import read_products
+from modules.validators import validate_custom_filename
 
 
 class TestCore(unittest.TestCase):
@@ -28,6 +29,22 @@ class TestCore(unittest.TestCase):
             ws.append(['2.3', 'Product 23'])
             wb.save(p)
             self.assertEqual(read_products(str(p)), {'1.11': 'Product 11', '2.3': 'Product 23'})
+
+    
+    def test_valid_custom_filename(self):
+        self.assertEqual(
+            validate_custom_filename("Inspection Oct 2026.pdf"),
+            "Inspection Oct 2026.pdf"
+        )
+
+    def test_invalid_custom_filename(self):
+        with self.assertRaises(ValueError):
+            validate_custom_filename("Invalid/Name.pdf")
+
+    def test_missing_pdf_extension(self):
+        with self.assertRaises(ValueError):
+            validate_custom_filename("Inspection October")
+
 
 
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-# PDF Organizer V1 — Modular Python Desktop Application
+# PDF Organizer — Modular Python Desktop Application
 
 [![PyPI Python Version](https://img.shields.io/pypi/pyversions/3.14.10)](https://www.python.org/downloads/)
 
@@ -92,10 +92,11 @@ Existing output files are not silently overwritten. If you rename a previously e
 | Priority | Feature | Files to modify | Status |
 |---|---|---|---|
 | 1 | Remember previous selected date | `main_window.py`: `save_and_continue()` | <b>Done</b> |
-| 2 | Modify filename in UI |  | <b>In progress</b> |
+| 2 | Modify filename in UI |  | <b>Done</b> |
 | 3 | Import expected item quantity | `excel_handler.py`, `excel_config_dialog.py` | <b>Not started</b> |
 | 4 | Show quatity warning to user | 	New `quantity_validator.py`, `main_window.py`, tests\ | <b>Not started</b> |
 | 5 | Delete wrong files (add review mode, overwrite filenames saved) |  | <b>Not started</b> |
+| 6 | (Auto numbering if without item number) |  | <b>Not started</b> |
 
 
 ## Excel  comfiguration mapping

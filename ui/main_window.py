@@ -12,6 +12,7 @@ from ui.excel_config_dialog import ExcelConfigDialog
 from modules.filename_generator import MONTHS, make_filename
 from modules.page_state import PageState
 from modules.pdf_handler import open_document, render_page, export_page
+from modules.validators import validate_custom_filename
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -124,11 +125,23 @@ class MainWindow(QMainWindow):
         rv.addWidget(date_group)
 
         # "Output filename preview" layout
-        rv.addWidget(QLabel('Output filename preview:'))
-        self.filename_label = QLabel('—')
-        self.filename_label.setWordWrap(True)
-        self.filename_label.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
-        rv.addWidget(self.filename_label)
+        rv.addWidget(QLabel("Output filename:"))
+
+        self.filename_edit = QLineEdit()
+        self.filename_edit.setReadOnly(True)
+        rv.addWidget(self.filename_edit)
+
+        self.customize_filename = QPushButton("Customize filename")
+        self.customize_filename.setCheckable(True)
+        rv.addWidget(self.customize_filename)
+
+        # Connect signals to slots
+        self.customize_filename.toggled.connect(self.toggle_filename_edit)
+
+        self.filename_edit.textEdited.connect(self.filename_changed)
+
+
+        # Previous/Saved button layout
         self.saved_label = QLabel('')
         self.saved_label.setWordWrap(True)
         rv.addWidget(self.saved_label)
@@ -265,16 +278,41 @@ class MainWindow(QMainWindow):
         self.prev.setEnabled(has_doc and self.index > 0)
         self.next.setEnabled(ready)
         if not has_doc:
-            self.filename_label.setText('—')
+            # self.filename_label.setText('—')
             self.saved_label.setText('')
             return
         state = self.states[self.index]
         self.page_label.setText(f'Page {self.index + 1} / {len(self.states)}  |  Zoom {self.zoom:.0%}')
+
+        # Update filename and saved status
         try:
-            name = make_filename(state.items, state.month, state.year)
+            generated_name = make_filename(
+                state.items,
+                state.month,
+                state.year
+            )
         except ValueError:
-            name = '(Add at least one product to generate a filename)'
-        self.filename_label.setText(name)
+            generated_name = ""
+
+        manual = state.custom_filename is not None
+
+        self.customize_filename.blockSignals(True)
+        self.customize_filename.setChecked(manual)
+        self.customize_filename.blockSignals(False)
+
+        self.customize_filename.setText(
+            "Use automatic filename" if manual
+            else "Customize filename"
+        )
+
+        self.filename_edit.setReadOnly(not manual)
+
+        self.filename_edit.setText(
+            state.custom_filename if manual
+            else generated_name
+        )
+
+
         self.saved_label.setText(f'Previously saved: {state.saved_path}' if state.saved_path else 'Not yet saved')
         saved_count = sum(bool(s.saved_path) for s in self.states)
         self.status.setText(f'{saved_count}/{len(self.states)} pages saved  |  Excel products: {len(self.products)}  |  Output: {self.output_dir or "Not selected"}')
@@ -296,7 +334,19 @@ class MainWindow(QMainWindow):
             for code, _ in state.items:
                 if code not in self.products:
                     raise ValueError(f'Product {code} is missing from the loaded Excel file.')
-            name = make_filename(state.items, state.month, state.year)
+            
+                # Validate product selections regardless of filename mode.
+                make_filename(state.items, state.month, state.year)
+
+                if state.custom_filename is not None:
+                    name = validate_custom_filename(state.custom_filename)
+                else:
+                    name = make_filename(
+                        state.items,
+                        state.month,
+                        state.year
+                    )
+
         except ValueError as exc:
             QMessageBox.warning(self, 'Invalid filename', str(exc))
             return
@@ -339,6 +389,34 @@ class MainWindow(QMainWindow):
             self._update_controls()
             QMessageBox.information(self, 'Finished', f'Final page saved.\n\n{sum(bool(s.saved_path) for s in self.states)} of {len(self.states)} pages have been exported.\n\nOutput folder:\n{self.output_dir}')
 
+    
+    def toggle_filename_edit(self, checked: bool):
+        if not self.states:
+            self.customize_filename.blockSignals(True)
+            self.customize_filename.setChecked(False)
+            self.customize_filename.blockSignals(False)
+            return
+
+        state = self.states[self.index]
+
+        if checked:
+            if state.custom_filename is None:
+                state.custom_filename = self.filename_edit.text()
+        else:
+            state.custom_filename = None
+
+        self._update_controls()
+
+
+    def filename_changed(self, text: str):
+        if not self.states:
+            return
+
+        state = self.states[self.index]
+        state.custom_filename = text
+
+    
+    
     def closeEvent(self, event):
         if self.document:
             self.document.close()
