@@ -110,6 +110,7 @@ class MainWindow(QMainWindow):
         gv.addWidget(remove)
         rv.addWidget(group, 1)
 
+        # "Document date" group layout
         date_group = QGroupBox('Document date')
         date_form = QFormLayout(date_group)
         self.month = QComboBox()
@@ -121,6 +122,8 @@ class MainWindow(QMainWindow):
         date_form.addRow('Month', self.month)
         date_form.addRow('Year', self.year)
         rv.addWidget(date_group)
+
+        # "Output filename preview" layout
         rv.addWidget(QLabel('Output filename preview:'))
         self.filename_label = QLabel('—')
         self.filename_label.setWordWrap(True)
@@ -131,7 +134,7 @@ class MainWindow(QMainWindow):
         rv.addWidget(self.saved_label)
         nav = QHBoxLayout()
         self.prev = QPushButton('← Previous')
-        self.next = QPushButton('Save & Continue →')
+        self.next = QPushButton('Save and Continue →')
         self.prev.clicked.connect(self.previous)
         self.next.clicked.connect(self.save_and_continue)
         nav.addWidget(self.prev)

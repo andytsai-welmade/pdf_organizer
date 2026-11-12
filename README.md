@@ -31,7 +31,8 @@ PDF_Organizer_V1_Modular/
 
 ### Build on an approved Windows computer
 
-> TODO: Create an .exe file to execute this project
+<!-- > TODO: Create an .exe file to execute this project -->
+Add the package into `:nas\Engineer\AMC maintenace`
 
 ## Run source code (on a computer with Python)
 
@@ -70,7 +71,6 @@ Use the first worksheet with **column A = Product Code** and **column B = Produc
 | 2.3 | Product 23 |
 
 ## Usage
-> TODO: Update when more functions needed.
 
 1. Open the scanned PDF.
 2. Load the Excel product database.
@@ -81,16 +81,18 @@ Use the first worksheet with **column A = Product Code** and **column B = Produc
 
 Existing output files are not silently overwritten. If you rename a previously exported page, the old export is retained and you are notified. The original scanned PDF is never modified.
 
-## 
 
-## To be imporved
+## Upgrade Priority
 
-- No automatic session recovery after closing the app.
-- Same filename for different pages is rejected; choose distinct naming data.
-- Customize the filename in the UI
-- Validate the number in the excel with the items (give the user a warning)
-- Delete the previous saved file (delete files named wrong or by mistakes)
-- (Product/date selection is manual.) -> Files are not the same
+> TODO: Update when more functions needed.
+
+| Priority | Feature | Files to modify |
+|---|---|---|
+| 1 | Remember previous selected date | `page_state.py`, `main_window.py`|
+| 2 | Modify filename in UI |  |
+| 3 | Import expected item quantity | `excel_handler.py`, `excel_config_dialog.py` |
+| 4 | Show quatity warning to user | 	New `quantity_validator.py`, `main_window.py`, tests\ |
+| 5 | Delete wrong files (add review, modify filename mode) |  |
 
 
 ## Excel  comfiguration mapping

@@ -20,7 +20,8 @@ def make_filename(items: list[tuple[str, int]], month: int, year: int) -> str:
     
     # Check for invalid filename and invalid item numbers
     '''
-    TODO: check the item quantity in the excel
+    TODO: check the item quantity in the excel 
+          to match the number slected
     '''
     for code, quantity in items:
         if not code or INVALID_FILENAME.search(code) or code.endswith(('.', ' ')):
