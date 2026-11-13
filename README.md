@@ -8,7 +8,7 @@ One scanned PDF page becomes one output PDF, named from an Excel product databas
 ## Project layout
 
 ```text
-PDF_Organizer_V1_Modular/
+PDF_Organizer/
 ├── main.py                    # Application entry point
 │
 ├── modules/
@@ -89,14 +89,15 @@ Existing output files are not silently overwritten. If you rename a previously e
 
 > TODO: Update when more functions needed.
 
-| Priority | Feature | Files to modify | Status |
+| Versions | Feature | Files to modify | Status |
 |---|---|---|---|
-| 1 | Remember previous selected date | `main_window.py`: `save_and_continue()` | <b>Done</b> |
-| 2 | Modify filename in UI |  | <b>Done</b> |
-| 3 | Import expected item quantity | `excel_handler.py`, `excel_config_dialog.py` | <b>Not started</b> |
-| 4 | Show quatity warning to user | 	New `quantity_validator.py`, `main_window.py`, tests\ | <b>Not started</b> |
-| 5 | Delete wrong files (add review mode, overwrite filenames saved) |  | <b>Not started</b> |
-| 6 | (Auto numbering if without item number) |  | <b>Not started</b> |
+| v1.0 | Remember previous selected date | `main_window.py`: `save_and_continue()` | <b>Done</b> |
+| v1.0 | Modify filename in UI |  | <b>Done</b> |
+| v1.0 | Manage accident closes (close/open another file) after some saves | | <b>Not Started</b> |
+| v1.1 | Import expected item quantity | `excel_handler.py`, `excel_config_dialog.py` | <b>Not started</b> |
+| v1.1 | Show quatity warning to user | 	New `quantity_validator.py`, `main_window.py`, tests\ | <b>Not started</b> |
+| v1.2 | Delete wrong files (add review mode, overwrite filenames saved) |  | <b>Not started</b> |
+| v1.2 | (Auto numbering if without item number) |  | <b>Not started</b> |
 
 
 ## Excel  comfiguration mapping

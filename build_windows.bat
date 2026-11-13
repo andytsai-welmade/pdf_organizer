@@ -1,7 +1,7 @@
 @echo off
 setlocal
-py -m pip install -r requirements.txt pyinstaller
+python -m pip install -r requirements.txt pyinstaller
 if errorlevel 1 exit /b 1
-py -m PyInstaller --noconfirm --clean --onefile --windowed --name PDFOrganizer main.py
+python -m PyInstaller --noconfirm --clean --onedir --windowed --name PDF_Organizer main.py
 if errorlevel 1 exit /b 1
-echo Finished: dist\PDFOrganizer.exe
+echo Finished: dist\PDF_Organizer.exe
