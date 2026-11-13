@@ -335,17 +335,17 @@ class MainWindow(QMainWindow):
                 if code not in self.products:
                     raise ValueError(f'Product {code} is missing from the loaded Excel file.')
             
-                # Validate product selections regardless of filename mode.
-                make_filename(state.items, state.month, state.year)
+            # Validate product selections regardless of filename mode.
+            make_filename(state.items, state.month, state.year)
 
-                if state.custom_filename is not None:
-                    name = validate_custom_filename(state.custom_filename)
-                else:
-                    name = make_filename(
-                        state.items,
-                        state.month,
-                        state.year
-                    )
+            if state.custom_filename is not None:
+                name = validate_custom_filename(state.custom_filename)
+            else:
+                name = make_filename(
+                    state.items,
+                    state.month,
+                    state.year
+                )
 
         except ValueError as exc:
             QMessageBox.warning(self, 'Invalid filename', str(exc))
